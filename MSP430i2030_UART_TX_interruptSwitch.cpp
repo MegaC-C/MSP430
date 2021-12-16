@@ -15,9 +15,13 @@ int main (){
 	UC0CTLW0 |= UCSWRST;
 	UC0CTLW0 |= UCSSEL__SMCLK;
 	UCA0BRW = 8;
+	
+	P1SEL1 &= ~BIT3;
+	P1SEL0 |= BIT3;
+	
 	UCA0MCTLW |= F7E1;
 		
-	_enable_interrupts();
+	__enable_interrupt();
 	
 	while(1){};
 	
