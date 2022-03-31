@@ -1,3 +1,12 @@
+const char red = 'r';
+const char yellow = 'y';
+const char green = 'g';
+const char turquoise = 't';
+const char blue = 'b';
+const char purple = 'p';
+const char white = 'w';
+const char off = 'o';
+
 void LED(char color){
 	P2OUT &= ~BIT0 & ~BIT5 & ~BIT1;
 	switch(color){
@@ -19,9 +28,13 @@ void LED(char color){
 		case 'p':
 			P2OUT |= BIT0  | BIT1;
 			break;
+		case 'w':
+			P2OUT |= BIT0  | BIT5 | BIT1;
+			break;
 		case 'o':
 			break;
 		default:
 			P2OUT |= BIT0  | BIT5 | BIT1;
+			break;
 	}
 }
