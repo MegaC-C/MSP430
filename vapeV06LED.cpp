@@ -23,6 +23,5 @@ void LED(char color){
 			break;
 		default:
 			P2OUT |= BIT0  | BIT5 | BIT1;
-			break;
 	}
 }
