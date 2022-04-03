@@ -1,24 +1,4 @@
-//***************************************************************************************
-//  MSP430 Blink the LED Demo - Software Toggle P1.4
-//
-//  Description; Toggle P1.4 by xor'ing P1.4 inside of a software loop.
-//  ACLK = n/a, MCLK = SMCLK = default DCO
-//
-//                MSP430i20xx
-//             -----------------
-//         /|\|              XIN|-
-//          | |                 |
-//          --|RST          XOUT|-
-//            |                 |
-//            |             P1.4|-->LED
-//
-//  Texas Instruments, Inc
-//  July 2011
-//***************************************************************************************
-
 #include <msp430.h>
-
-
 
 const char red = 'r';
 const char yellow = 'y';
@@ -97,27 +77,7 @@ void main(void) {
                   while(i != 0)i--;
                   LED(off);
                   i = 500000;
-
-
-
-
 	    }
 	    else P2OUT &= ~BIT0 & ~BIT5 & ~BIT1;
-
-//	    while(i != 0)i--;
-//	    P2OUT ^= BIT0;
-//	    P2OUT ^= BIT1;
-//	    i = 500000;
-//	    while(i != 0)i--;
-//	            P2OUT ^= BIT1;
-//	            P2OUT ^= BIT5;
-//	            i = 500000;
-//	            while(i != 0)i--;
-//	                    P2OUT ^= BIT5;
-//	                    P2OUT ^= BIT0;
-//	                    i = 500000;
-
-
 	}
-
 }
