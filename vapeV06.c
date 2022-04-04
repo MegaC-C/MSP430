@@ -40,12 +40,17 @@ void LED(char color){
             break;
     }
 }
+void mosfetON(){
+	P1OUT |= BIT1;
+}
+void mosfetOFF(){
+	P1OUT &= ~BIT1;
+}
 
 void main(void) {
 	WDTCTL = WDTPW | WDTHOLD;		// Stop watchdog timer
-	P2DIR |= BIT0;					// Set P1.4 to output direction
-	P2DIR |= BIT1;
-	P2DIR |= BIT5;
+	P2DIR |= BIT0 | BIT5 | BIT1;				// Set LED rgb
+	P1DIR |= BIT1;									//Set mosfet
 
 
 	long i = 500000;
