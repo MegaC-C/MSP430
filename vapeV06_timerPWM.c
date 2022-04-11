@@ -14,13 +14,19 @@ int main(void){
 	P1SEL1 |= BIT5;
 	P1DIR |= BIT5;
 	P1OUT |= BIT5;
-
+	
+	//---setup Timer---
+	//1.configure Timer
     TA0CTL |= TACLR;
-	TA0CCR0 = 400;
-	TA0CCR1 = 100;
+    TA0CTL |= TASSEL_1 | TAIE;
+	//2.configure CCRx
 	TA0CCTL0 |= CCIE;
+	TA0CCR0 = 400;
 	TA0CCTL1 |= OUTMOD_7;
-	TA0CTL |= TASSEL_1;
+	TA0CCR1 = 100;
+	//3.clear IFG and start timer
+	TA0CCTL0 &= ~CCIFG;
+	TA0CTL &= ~TAIFG;
 	TA0CTL |= MC_1;
 
     SD24CTL = SD24REFS;                         // Internal ref
@@ -38,22 +44,26 @@ int main(void){
 }
 
 #pragma vector=SD24_VECTOR
-__interrupt void ISR_SD24(void){
+__interrupt void myISR_SD24(void){
     raw = SD24MEM0;                             // Save SD24 results (clears IFG)
     P1SEL1 |= BIT5;
-    TA0CTL |= MC_1;
+    //TA0CTL |= MC_1;
+    SD24CCTL0 &= ~SD24IFG;
 }
 #pragma vector=TIMER0_A0_VECTOR                 // IFG cleared automatically
-__interrupt void ISR_TimerA0CCR0(void){
+__interrupt void myISR_TA0_CCR0(void){
     --counter;
+    TA0CCTL0 &= ~CCIFG;
 }
 #pragma vector=TIMER0_A1_VECTOR 				 // one TA0 cycle between CCR0 and TA0IV ~30us to fully saturate mosfet gate capacitance, 10 times excess (25nC/10mA=2.5us)
-__interrupt void myISR_TA0_TA0IV(void){
+__interrupt void myISR_TA0_other(void){
 	if(counter==0){
+		//TA0CTL |= MC_1;
         P1SEL1 &= ~BIT5;       
         SD24CCTL0 |= SD24SC;                    // Set bit to start conversion
         counter=countNumber;
     }
+    TA0CTL &= ~TAIFG;
 }
 
 
