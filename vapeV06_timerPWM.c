@@ -6,7 +6,7 @@
 
 #define myCOUNTNUMBER 10;        // "define" because "const int" is not C compatible
 unsigned int raw;
-int counter=countNumber;
+int counter=myCOUNTNUMBER;
 
 int main(void){
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
@@ -55,7 +55,7 @@ __interrupt void myISR_TA0_CCR0(void){
 __interrupt void myISR_TA0_other(void){
 	if(counter==0){ 
         SD24CCTL0 |= SD24SC;                    // Set bit to start conversion
-        counter=countNumber;
+        counter=myCOUNTNUMBER;
     }
     TA0CTL &= ~TAIFG;
 }
