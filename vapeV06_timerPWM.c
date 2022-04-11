@@ -17,13 +17,13 @@ int main(void){
 	
 	//---setup Timer---
 	//1.configure Timer
-    TA0CTL |= TACLR;
-    TA0CTL |= TASSEL_1 | TAIE;
+    TA0CTL |= TACLR;					//clear TA0
+    TA0CTL |= TASSEL_1 | TAIE;	//ACLK as source, enable TA0IFG interrupt
 	//2.configure CCRx
-	TA0CCTL0 |= CCIE;
-	TA0CCR0 = 400;
-	TA0CCTL1 |= OUTMOD_7;
-	TA0CCR1 = 100;
+	TA0CCTL0 |= CCIE;					//enable TA0CCR0 interrupt
+	TA0CCR0 = 512;						// results in 64Hz frequency
+	TA0CCTL1 |= OUTMOD_7;		//Reset/Set
+	TA0CCR1 = 0;							//start with 0% duty cycle
 	//3.clear IFG and start timer
 	TA0CCTL0 &= ~CCIFG;
 	TA0CTL &= ~TAIFG;
