@@ -46,14 +46,37 @@ __interrupt void ISR_SD24(void){
 #pragma vector=TIMER0_A0_VECTOR                 // IFG cleared automatically
 __interrupt void ISR_TimerA0CCR0(void){
     --counter;
-    if(counter==0){
-        TA0CTL &= ~MC_1;
-        P1SEL1 &= ~BIT5;
-        __delay_cycles(400);                    // wait ~25us to fully saturate mosfet gate capacitance, 10 times excess (25nC/10mA=2.5us)
+}
+#pragma vector=TIMER0_A1_VECTOR 				 // one TA0 cycle between CCR0 and TA0IV ~30us to fully saturate mosfet gate capacitance, 10 times excess (25nC/10mA=2.5us)
+__interrupt void myISR_TA0_TA0IV(void){
+	if(counter==0){
+        P1SEL1 &= ~BIT5;       
         SD24CCTL0 |= SD24SC;                    // Set bit to start conversion
         counter=countNumber;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
