@@ -15,6 +15,8 @@ int main(void){
 	P1DIR |= BIT5;
 	P1OUT |= BIT5;
 	
+	P1DIR |= BIT4;
+	
 	SD24CTL = SD24REFS;                         // Internal ref
     SD24CCTL0  |= SD24SNGL | SD24DF | SD24IE;   // single conversion, 2s compliment
     SD24INCTL0 |= SD24INCH_6;                   // Internal temp sensor
@@ -47,13 +49,15 @@ __interrupt void myISR_TA0_CCR0(void){
     --counter;
 	if(counter==0){
 		//TA0CTL |= MC_1;
-        P1SEL1 &= ~BIT5;       
+        P1SEL1 &= ~BIT5;
+        P1OUT ^= BIT4;       
     }
     TA0CCTL0 &= ~CCIFG;
 }
 #pragma vector=TIMER0_A1_VECTOR 				 // one TA0 cycle between CCR0 and TA0IV ~30us to fully saturate mosfet gate capacitance, 10 times excess (25nC/10mA=2.5us)
 __interrupt void myISR_TA0_other(void){
 	if(counter==0){ 
+        P1OUT ^= BIT4;
         SD24CCTL0 |= SD24SC;                    // Set bit to start conversion
         counter=myCOUNTNUMBER;
     }
