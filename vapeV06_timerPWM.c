@@ -56,7 +56,7 @@ __interrupt void myISR_TA0_CCR0(void)
     }
     TA0CCTL0 &= ~CCIFG;
 }
-#pragma vector=TIMER0_A1_VECTOR                         // fires when timer counts to 0; ne TA0 cycle between CCR0 and TA0IV ~30us to fully saturate mosfet gate capacitance, >10 times excess (25nC/10mA=2.5us)
+#pragma vector=TIMER0_A1_VECTOR                         // TAIFG fires when timer counts to 0; ne TA0 cycle between CCR0 and TA0IV ~30us to fully saturate mosfet gate capacitance, >10 times excess (25nC/10mA=2.5us)
 __interrupt void myISR_TA0_other(void)
 {
     if (counter == 0)
