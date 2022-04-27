@@ -1,7 +1,7 @@
 #include <msp430.h> 
 
 unsigned int lastTime, capturedTime, deltaTime;
-int pressButton;
+int pressButton = 3;
 bool active = 1;
 
 int main(void)
@@ -13,7 +13,7 @@ int main(void)
     TA0CTL |= TACLR;               //clear TA0
     TA0CTL |= TASSEL_1 | TAIE;     //ACLK as source, enable TA0IFG interrupt
     //2.configure CCRx
-    TA0CCTL1 |= CAP | CM__BOTH | CCIS__GND;    
+    TA0CCTL1 |= CAP | CM__BOTH | CCIS__GND;		//CCR1 in capture mode, sensitive to switching to VCC and GND, select GND as initial input signal
     //3.clear IFG and start timer
     TA0CTL &= ~TAIFG;
     TA0CTL |= MC_1;
@@ -23,6 +23,11 @@ int main(void)
     while (1)
     {
         if(active == 1 && 
+        
+        else
+        {
+        	pressButton = 3;
+        }  
     }
     return 0;
 }
@@ -33,11 +38,14 @@ __interrupt void myISR_Port1(void){
 	lastTime = capturedTime;
 	capturedTime = TA0CCR1;
 	deltaTime = capturedTime - lastTime;
-	if(minTime < deltaTime){
-		if(deltaTime < maxTime){
+	if(minTime < deltaTime)
+	{
+		if(deltaTime < maxTime)
+		{
 			--pressButton;
 		}
-		else{
+		else
+		{
 			pressButton = 2;
 		}
 	}
