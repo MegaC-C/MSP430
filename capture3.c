@@ -25,11 +25,9 @@ int main(void)
     while (1)
     {
         if(active == 1 && (PIN1 & BIT1))
-        
-        else
         {
-        	pressButton = 3;
-        }  
+        	ghj
+       
     }
     return 0;
 }
@@ -40,7 +38,7 @@ __interrupt void myISR_Port1(void){
 	lastTime = capturedTime;
 	capturedTime = TA0CCR1;
 	deltaTime = capturedTime - lastTime;
-	if(minTime < deltaTime)
+	if(minTime < deltaTime && pressButton != 0)
 	{
 		if(deltaTime < maxTime)
 		{
