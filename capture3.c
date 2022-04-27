@@ -7,6 +7,8 @@ bool active = 1;
 int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;                    // stop watchdog timer
+    
+    P1DIR |= BIT1;
 
     //---setup Timer---
     //1.configure Timer
@@ -22,7 +24,7 @@ int main(void)
 
     while (1)
     {
-        if(active == 1 && 
+        if(active == 1 && (PIN1 & BIT1))
         
         else
         {
