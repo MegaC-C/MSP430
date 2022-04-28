@@ -13,7 +13,7 @@ int main(void)
     P2DIR |= BIT0 | BIT5 | BIT1; //Set LED rgb as output
     P1DIR &= ~BIT1;     // set as input
 
-    // ---setup Timer---
+    // ---setup Timer---  as described in MSP430 workshop series
     // 1.configure Timer
     TA0CTL |= TACLR;        // clear TA0
     TA0CTL |= TASSEL_1 | TAIE;  // ACLK as source, enable TA0IFG interrupt
