@@ -50,7 +50,7 @@ __interrupt void myISR_Port1(void)
     	--pressButton;
     }
     TA1CTL |= TACLR;		// clear TA1R = 0, stop TA1
-    TA1CTL &= ~TAIFG	// clear TA1 IFG
+    TA1CTL &= ~TAIFG;	// clear TA1 IFG
     TA1CTL |= MC_1;		// start TA1
     
      P1IFG &= ~BIT1;
@@ -61,7 +61,12 @@ __interrupt void myISR_TA1_other(void)
 {
     if(pressButton == 0)
     {
-
+    	--onCounter;		// turn device off after given time
     }
+    else
+    {
+    	pressButton = 3;	// reset button input
+    }
+    
     TA1CTL &= TAIFG;
 }
