@@ -9,13 +9,14 @@ int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD; // stop watchdog timer
 
+    // ---setup LED---
     P2DIR |= BIT0 | BIT5 | BIT1; //Set LED rgb as output
     
+    // ---setup hall switch---
     P1DIR &= ~BIT1;     // set as input
     P1IES |= BIT1;		// interrupt on high-to-low transition, hall sensor high = off
     P1IFG &= ~BIT1;	// clear IFG flag
     P1IE |= BIT1;		// enable local interrupt
-    
 
     // ---setup Timer---  as described in MSP430 workshop series
     // 1.configure Timer
