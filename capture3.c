@@ -1,6 +1,6 @@
 #include <msp430.h>
 
-#define minTime 1
+#define minTime 1600  	// 50ms @ ACLK; 1 = 31,25ms
 #define maxTime 1
 
 unsigned int lastTime, capturedTime, deltaTime;
@@ -15,13 +15,13 @@ int main(void)
 
     // ---setup Timer---  as described in MSP430 workshop series
     // 1.configure Timer
-    TA0CTL |= TACLR;        // clear TA0
-    TA0CTL |= TASSEL_1 | TAIE;  // ACLK as source, enable TA0IFG interrupt
+    TA1CTL |= TACLR;        // clear TA1
+    TA1CTL |= TASSEL_1 | TAIE;  // ACLK as source, enable TA1IFG interrupt
     // 2.configure CCRx
-    TA0CCTL1 |= CAP | CCIS_2 | CM_3; // CCR1 in capture mode, select GND as initial input signal, sensitive to switching to VCC and GND
+    TA1CCTL1 |= CAP | CCIS_2 | CM_3; // CCR1 in capture mode, select GND as initial input signal, sensitive to switching to VCC and GND
     // 3.clear IFG and start timer
-    TA0CTL &= ~TAIFG;
-    TA0CTL |= MC_1;
+    TA1CTL &= ~TAIFG;
+    TA1CTL |= MC_1;
 
     __enable_interrupt();   // enable global interrupts
 
@@ -42,9 +42,9 @@ int main(void)
 #pragma vector = PORT1_VECTOR
 __interrupt void myISR_Port1(void)
 {
-    TA0CCTL1 ^= CCIS0;      // toggle VCC and GND to capture TA0.1
+    TA1CCTL1 ^= CCIS0;      // toggle VCC and GND to capture TA1.1
     lastTime = capturedTime;
-    capturedTime = TA0CCR1;
+    capturedTime = TA1CCR1;
     deltaTime = capturedTime - lastTime;
     if (minTime < deltaTime && pressButton != 0)
     {
@@ -60,12 +60,12 @@ __interrupt void myISR_Port1(void)
     P1IFG &= ~BIT1;
 }
 
-#pragma vector = TIMER0_A1_VECTOR
-__interrupt void myISR_TA0_other(void)
+#pragma vector = TIMER1_A1_VECTOR
+__interrupt void myISR_TA1_other(void)
 {
     if(pressButton == 0)
     {
 
     }
-    TA0CTL &= TAIFG;
+    TA1CTL &= TAIFG;
 }
