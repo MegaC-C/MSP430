@@ -1,7 +1,6 @@
 #include <msp430.h>
 
-#define minTime 1600  	// 50ms @ ACLK; 1 = 31,25ms
-#define maxTime 1
+#define debounceTime 1600  	// 50ms @ ACLK; 1 = 31,25ms
 
 unsigned int lastTime, capturedTime, deltaTime;
 int pressButton = 2;
@@ -20,8 +19,8 @@ int main(void)
     // 2.configure CCRx
     TA1CCTL1 |= CAP | CCIS_2 | CM_3; // CCR1 in capture mode, select GND as initial input signal, sensitive to switching to VCC and GND
     // 3.clear IFG and start timer
-    TA1CTL &= ~TAIFG;
-    TA1CTL |= MC_1;
+    // TA1CTL &= ~TAIFG;
+    // TA1CTL |= MC_1;
 
     __enable_interrupt();   // enable global interrupts
 
@@ -46,18 +45,15 @@ __interrupt void myISR_Port1(void)
     lastTime = capturedTime;
     capturedTime = TA1CCR1;
     deltaTime = capturedTime - lastTime;
-    if (minTime < deltaTime && pressButton != 0)
+    if (deltaTime > debounceTime && pressButton != 0)
     {
-        if (deltaTime < maxTime)
-        {
-            --pressButton;
-        }
-        else
-        {
-            pressButton = 2;
-        }
+    	--pressButton;
     }
-    P1IFG &= ~BIT1;
+    TA1CTL |= TACLR;		// clear TA1R = 0, stop TA1
+    TA1CTL &= ~TAIFG	// clear TA1 IFG
+    TA1CTL |= MC_1;		// start TA1
+    
+     P1IFG &= ~BIT1;
 }
 
 #pragma vector = TIMER1_A1_VECTOR
