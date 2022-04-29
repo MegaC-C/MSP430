@@ -34,6 +34,27 @@ int main(void)
 
     while (1)
     {
+    	if(P1IN & BIT1)
+    	{
+    		switch(pressButton)
+    		{
+    			case 3:
+    			LED(off);
+    			break;
+    			case 2:
+    			LED(blue);
+    			break;
+    			case 1:
+    			LED(purple);
+    			break;
+    			case 0:
+    			LED(red);
+    			break;
+    			default:
+    			brea
+    			
+    				
+    	}
         if (pressButton == 0 && (P1IN & BIT1))
         {
             P2OUT = BIT0;   // red on
@@ -53,7 +74,7 @@ __interrupt void myISR_Port1(void)
     lastTime = capturedTime;
     capturedTime = TA1CCR1;
     deltaTime = capturedTime - lastTime;
-    if (deltaTime > debounceTIME && pressButton != 0)
+    if(deltaTime > debounceTIME && pressButton != 0)
     {
     	--pressButton;
     }
