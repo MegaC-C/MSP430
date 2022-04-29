@@ -1,10 +1,11 @@
 #include <msp430.h>
 
-#define debounceTime 1600  	// 50ms @ ACLK; 1 = 31,25ms
+#define debounceTIME 1600  	// 50ms @ ACLK; 1 = 31,25ms
+#define onTIME 150		// 300s @ ACLK; 1 = 2s
 
 unsigned int lastTime, capturedTime, deltaTime;
 int pressButton = 3;
-int onCounter = 
+int onCounter = onTIME
 
 int main(void)
 {
@@ -52,7 +53,7 @@ __interrupt void myISR_Port1(void)
     lastTime = capturedTime;
     capturedTime = TA1CCR1;
     deltaTime = capturedTime - lastTime;
-    if (deltaTime > debounceTime && pressButton != 0)
+    if (deltaTime > debounceTIME && pressButton != 0)
     {
     	--pressButton;
     }
@@ -60,7 +61,7 @@ __interrupt void myISR_Port1(void)
     TA1CTL &= ~TAIFG;	// clear TA1 IFG
     TA1CTL |= MC_1;		// start TA1
     
-    onCounter = onTime;
+    onCounter = onTIME;
     
      P1IFG &= ~BIT1;
 }
