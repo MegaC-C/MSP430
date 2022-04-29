@@ -4,6 +4,7 @@
 
 unsigned int lastTime, capturedTime, deltaTime;
 int pressButton = 3;
+int onCounter = 
 
 int main(void)
 {
@@ -58,6 +59,8 @@ __interrupt void myISR_Port1(void)
     TA1CTL |= TACLR;		// clear TA1R = 0, stop TA1
     TA1CTL &= ~TAIFG;	// clear TA1 IFG
     TA1CTL |= MC_1;		// start TA1
+    
+    onCounter = onTime;
     
      P1IFG &= ~BIT1;
 }
