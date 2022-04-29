@@ -51,9 +51,9 @@ int main(void)
     			LED(red);
     			break;
     			default:
-    			brea
-    			
-    				
+    			LED(white);
+    			break;
+    		}	
     	}
         if (pressButton == 0 && (P1IN & BIT1))
         {
@@ -99,5 +99,10 @@ __interrupt void myISR_TA1_other(void)
     	pressButton = 3;	// reset button input
     }
     
+    if(onCounter == 0)
+    {
+    	TA1CTL |= TACLR;		// clear TA1R = 0, stop TA1
+    	pressButton = 3;
+    }   
     TA1CTL &= TAIFG;
 }
