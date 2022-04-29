@@ -3,7 +3,7 @@
 #define debounceTime 1600  	// 50ms @ ACLK; 1 = 31,25ms
 
 unsigned int lastTime, capturedTime, deltaTime;
-int pressButton = 2;
+int pressButton = 3;
 
 int main(void)
 {
