@@ -114,7 +114,7 @@ __interrupt void myISR_Port1(void)
     {
       --pressButton;
     }
-    TA1CTL |= TACLR;    // clear TA1R = 0, stop TA1
+    TA1CTL |= TACLR;    // resets TA1R = 0
     TA1CTL |= MC_2;
 
     onCounter = onTIME;
@@ -136,8 +136,8 @@ __interrupt void myISR_TA1_other(void)
 
     if(onCounter == 0)
     {
-      TA1CTL &= ~MC_2;
-      TA1CTL |= TACLR;    // clear TA1R = 0, stop TA1
+      TA1CTL &= ~MC_2;  	// stop TA1
+      TA1CTL |= TACLR;    // resets TA1R = 0
       pressButton = 3;
     }
     TA1CTL &= ~TAIFG;
